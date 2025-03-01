@@ -61,6 +61,14 @@ describe('ZentaoAPI', () => {
 
     describe('getMyBugs', () => {
         it('should fetch bugs successfully', async () => {
+            // Mock products response
+            const mockProducts = {
+                products: [
+                    { id: 1, name: 'Product 1' }
+                ]
+            };
+
+            // Mock bugs response
             const mockBugs = {
                 bugs: [
                     { id: 1, title: 'Bug 1', status: 'active', severity: 1 },
@@ -68,10 +76,18 @@ describe('ZentaoAPI', () => {
                 ]
             };
 
+            // Mock token response
             mockAxiosInstance.post.mockResolvedValueOnce({
                 status: 200,
                 data: { token: 'test-token' }
             });
+
+            // Mock products request
+            mockAxiosInstance.request.mockResolvedValueOnce({
+                data: mockProducts
+            });
+
+            // Mock bugs request
             mockAxiosInstance.request.mockResolvedValueOnce({
                 data: mockBugs
             });
