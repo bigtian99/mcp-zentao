@@ -1,6 +1,23 @@
 # MCP-ZenTao 禅道API集成包
 
-这个包提供了与禅道项目管理系统API的集成功能，可以方便地在Node.js项目中使用禅道的任务、Bug管理等功能。
+这个包提供了与禅道项目管理系统的深度集成功能，让你可以在 Node.js 项目中轻松使用禅道的任务管理、Bug跟踪等功能，而无需直接操作数据库。
+
+## 特点
+
+- 完整的禅道API封装
+- 简单易用的接口设计
+- 类型安全（TypeScript支持）
+- 完善的错误处理
+- 自动化的认证管理
+
+## 与其他项目的区别
+
+不同于通用的数据库操作工具（如 mcp-mysql-server），本项目专注于提供：
+
+1. 禅道系统特定的业务功能
+2. 高级别的API抽象
+3. 完整的禅道工作流支持
+4. 开箱即用的禅道集成方案
 
 ## 安装
 
@@ -33,6 +50,26 @@ npm run build
 
 ## Docker 使用
 
+### 使用 docker-compose（推荐）
+
+1. 复制环境变量模板并修改配置
+```bash
+cp .env.example .env
+# 编辑 .env 文件，填入你的禅道系统配置
+```
+
+2. 启动服务
+```bash
+docker-compose up -d
+```
+
+3. 查看日志
+```bash
+docker-compose logs -f
+```
+
+### 手动使用 Docker
+
 1. 构建镜像
 ```bash
 docker build -t mcp-zentao .
@@ -40,11 +77,29 @@ docker build -t mcp-zentao .
 
 2. 运行容器
 ```bash
-docker run -e ZENTAO_URL=your-zentao-url \
-           -e ZENTAO_USERNAME=your-username \
-           -e ZENTAO_PASSWORD=your-password \
-           -e ZENTAO_API_VERSION=v1 \
-           mcp-zentao
+docker run -d \
+  --name mcp-zentao \
+  -p 3000:3000 \
+  -e ZENTAO_URL=your-zentao-url \
+  -e ZENTAO_USERNAME=your-username \
+  -e ZENTAO_PASSWORD=your-password \
+  -e ZENTAO_API_VERSION=v1 \
+  -v $(pwd)/logs:/app/logs \
+  mcp-zentao
+```
+
+### 在 Cursor IDE 中配置
+
+在 Cursor IDE 的配置文件中添加以下配置：
+
+```json
+{
+  "mcpServers": {
+    "zentao": {
+      "url": "http://localhost:3000"
+    }
+  }
+}
 ```
 
 ## 基本使用

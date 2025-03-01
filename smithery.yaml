@@ -10,10 +10,8 @@ build:
   
 # 依赖配置
 dependencies:
-  - name: node
-    version: ">=14.0.0"
-  - name: typescript
-    version: ">=4.0.0"
+  node: ">=14.0.0"
+  typescript: ">=4.0.0"
 
 # 测试配置
 test:
@@ -26,21 +24,31 @@ publish:
   
 # 集成配置
 integration:
-  type: npm-package
+  type: npm
   main: dist/index.js
   types: dist/index.d.ts
   
 # 文档配置
 documentation:
-  - README.md
-  - LICENSE
+  files:
+    - README.md
+    - LICENSE
 
 # 环境变量
-environment:
-  - ZENTAO_URL
-  - ZENTAO_USERNAME
-  - ZENTAO_PASSWORD
-  - ZENTAO_API_VERSION
+env:
+  - name: ZENTAO_URL
+    description: ZenTao system URL
+    required: true
+  - name: ZENTAO_USERNAME
+    description: ZenTao username
+    required: true
+  - name: ZENTAO_PASSWORD
+    description: ZenTao password
+    required: true
+    secret: true
+  - name: ZENTAO_API_VERSION
+    description: ZenTao API version
+    default: v1
 
 # 安全配置
 security:
@@ -49,7 +57,7 @@ security:
 
 # 开发工具配置
 development:
-  editor:
+  editors:
     - vscode
     - cursor
   extensions:

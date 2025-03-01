@@ -1,7 +1,7 @@
 {
     "name": "@bigtian/mcp-zentao",
     "version": "1.0.0",
-    "description": "禅道任务管理助手 - MCP扩展",
+    "description": "禅道项目管理系统的高级API集成包，提供任务管理、Bug跟踪等功能的完整封装，专为Cursor IDE设计的MCP扩展",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -21,7 +21,12 @@
         "mcp",
         "zentao",
         "禅道",
-        "任务管理"
+        "任务管理",
+        "项目管理",
+        "bug跟踪",
+        "api集成",
+        "cursor-ide",
+        "typescript"
     ],
     "author": "bigtian",
     "license": "MIT",
@@ -30,6 +35,7 @@
         "url": "https://github.com/bigtian/mcp-zentao.git"
     },
     "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.6.1",
         "axios": "^1.6.7",
         "chalk": "^4.1.2",
         "table": "^6.8.1"

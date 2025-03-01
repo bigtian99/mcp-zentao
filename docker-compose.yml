@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mcp-zentao:
+    build: .
+    container_name: mcp-zentao
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MCP_SERVER_PORT=3000
+      - ZENTAO_URL=${ZENTAO_URL}
+      - ZENTAO_USERNAME=${ZENTAO_USERNAME}
+      - ZENTAO_PASSWORD=${ZENTAO_PASSWORD}
+      - ZENTAO_API_VERSION=${ZENTAO_API_VERSION:-v1}
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
