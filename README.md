@@ -1,6 +1,65 @@
-# MCP-ZenTao 禅道API集成包
+# MCP-Zentao
 
-这个包提供了与禅道项目管理系统的深度集成功能，让你可以在 Node.js 项目中轻松使用禅道的任务管理、Bug跟踪等功能，而无需直接操作数据库。
+禅道项目管理系统的高级API集成包，提供任务管理、Bug跟踪等功能的完整封装，专为Cursor IDE设计的MCP扩展。
+
+## 安装
+
+```bash
+npm install @bigtian/mcp-zentao -g
+```
+
+## 使用方法
+
+### 首次使用（配置禅道信息）
+
+首次使用时，需要提供禅道的配置信息：
+
+```bash
+zentao '{"config":{"url":"https://your-zentao-url","username":"your-username","password":"your-password","apiVersion":"v1"},"name":"张三","age":25,"skills":["编程","设计"]}'
+```
+
+配置信息会被保存在用户目录下的 `.zentao/config.json` 文件中，后续使用时无需再次提供。
+
+### 后续使用
+
+配置完成后，只需要提供任务相关的信息即可：
+
+```bash
+zentao '{"name":"张三","age":25,"skills":["编程","设计"]}'
+```
+
+### 更新配置
+
+如果需要更新禅道配置信息，只需要再次提供 config 参数即可：
+
+```bash
+zentao '{"config":{"url":"https://new-zentao-url","username":"new-username","password":"new-password","apiVersion":"v1"},"name":"张三","age":25,"skills":["编程","设计"]}'
+```
+
+## 配置文件位置
+
+配置文件保存在用户目录下的 `.zentao/config.json` 文件中：
+
+- Windows: `C:\Users\你的用户名\.zentao\config.json`
+- macOS/Linux: `~/.zentao/config.json`
+
+## 功能特性
+
+- 支持配置信息的持久化存储
+- 自动管理禅道API的认证信息
+- 提供任务创建、更新、完成等功能
+- 支持Bug跟踪和处理
+- 完整的类型定义支持
+
+## 注意事项
+
+- 配置文件中包含敏感信息，请确保文件权限设置正确
+- 建议定期更新密码，以确保安全性
+- 如遇到问题，可以删除配置文件重新配置
+
+## 许可证
+
+MIT
 
 ## 特点
 
@@ -18,12 +77,6 @@
 2. 高级别的API抽象
 3. 完整的禅道工作流支持
 4. 开箱即用的禅道集成方案
-
-## 安装
-
-```bash
-npm install @bigtian/mcp-zentao
-```
 
 ## 本地开发
 
@@ -235,10 +288,6 @@ interface BugResolution {
 
 - Node.js >= 14.0.0
 - TypeScript >= 4.0.0
-
-## 许可证
-
-MIT
 
 ## 贡献
 

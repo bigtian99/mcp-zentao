@@ -1,7 +1,31 @@
+#!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { ZentaoAPI } from './api/zentaoApi.js';
+import { loadConfig, saveConfig } from './config.js';
+// 解析命令行参数
+const args = process.argv.slice(2);
+let configData = null;
+// 查找 --config 参数
+const configIndex = args.indexOf('--config');
+if (configIndex !== -1 && configIndex + 1 < args.length) {
+    try {
+        // 获取 --config 后面的 JSON 字符串并解析
+        const jsonStr = args[configIndex + 1];
+        configData = JSON.parse(jsonStr);
+        console.log('成功解析配置数据:', configData);
+        // 如果配置数据中包含 config 对象，则保存配置
+        if (configData.config) {
+            console.log('正在保存配置...');
+            saveConfig(configData.config);
+        }
+    }
+    catch (error) {
+        console.error('配置解析失败:', error);
+        process.exit(1);
+    }
+}
 // Create an MCP server
 const server = new McpServer({
     name: "Zentao API",
@@ -9,16 +33,26 @@ const server = new McpServer({
 });
 // Initialize ZentaoAPI instance
 let zentaoApi = null;
+export default async function main(params) {
+    console.log('接收到的参数:', params);
+    // 如果传入了配置信息，就保存它
+    if (params.config) {
+        console.log('保存新的配置信息...');
+        saveConfig(params.config);
+    }
+}
 // Add Zentao configuration tool
-server.tool("initZentao", {
-    url: z.string(),
-    username: z.string(),
-    password: z.string(),
-    apiVersion: z.string()
-}, async ({ url, username, password, apiVersion }) => {
-    zentaoApi = new ZentaoAPI({ url, username, password, apiVersion });
+server.tool("initZentao", {}, async ({}) => {
+    let config;
+    // 尝试从配置文件加载配置
+    const savedConfig = loadConfig();
+    if (!savedConfig) {
+        throw new Error("No configuration found. Please provide complete Zentao configuration.");
+    }
+    config = savedConfig;
+    zentaoApi = new ZentaoAPI(config);
     return {
-        content: [{ type: "text", text: "Zentao API initialized successfully" }]
+        content: [{ type: "text", text: JSON.stringify(config, null, 2) }]
     };
 });
 // Add getMyTasks tool

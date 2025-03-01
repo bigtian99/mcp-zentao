@@ -5,9 +5,13 @@
     "main": "dist/index.js",
     "type": "module",
     "types": "dist/index.d.ts",
+    "bin": {
+        "zentao": "json-args.js"
+    },
     "files": [
         "dist",
-        "README.md"
+        "README.md",
+        "json-args.js"
     ],
     "scripts": {
         "build": "tsc",
@@ -16,7 +20,8 @@
         "test": "jest",
         "test:watch": "jest --watch",
         "test:manual": "ts-node test/manual-test.ts",
-        "prepublishOnly": "npm run test && npm run build"
+        "prepublishOnly": "npm run test && npm run build",
+        "start": "node json-args.js"
     },
     "keywords": [
         "mcp",
