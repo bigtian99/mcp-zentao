@@ -1,4 +1,4 @@
-import { Bug, BugStatus, Task, TaskStatus, ZentaoConfig } from '../types/zentao';
+import { Bug, BugStatus, CreateTaskRequest, Task, TaskStatus, ZentaoConfig } from '../types/zentao';
 export interface Product {
     id: number;
     name: string;
@@ -34,4 +34,5 @@ export declare class ZentaoAPI {
     updateTask(taskId: number, update: TaskUpdate): Promise<Task>;
     finishTask(taskId: number, update?: TaskUpdate): Promise<Task>;
     resolveBug(bugId: number, resolution: BugResolution): Promise<Bug>;
+    createTask(task: CreateTaskRequest): Promise<Task>;
 }

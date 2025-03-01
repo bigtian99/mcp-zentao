@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BugService = void 0;
-const dateUtils_1 = require("../utils/dateUtils");
-class BugService {
+import { calculateDaysDifference } from '../utils/dateUtils';
+export class BugService {
+    api;
     constructor(api) {
         this.api = api;
     }
@@ -29,7 +27,7 @@ class BugService {
         }
         // 计算处理时间
         if (bug.openedDate) {
-            const daysOpen = (0, dateUtils_1.calculateDaysDifference)(bug.openedDate);
+            const daysOpen = calculateDaysDifference(bug.openedDate);
             enrichedBug.days_open = daysOpen;
             if (daysOpen > 7) {
                 enrichedBug.aging_status = '已超过7天';
@@ -47,4 +45,3 @@ class BugService {
         return enrichedBug;
     }
 }
-exports.BugService = BugService;

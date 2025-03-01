@@ -1,12 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatDate = formatDate;
-exports.calculateRemainingDays = calculateRemainingDays;
-exports.calculateDaysDifference = calculateDaysDifference;
-function formatDate(date) {
+export function formatDate(date) {
     return date.toISOString().split('T')[0];
 }
-function calculateRemainingDays(deadline) {
+export function calculateRemainingDays(deadline) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const deadlineDate = new Date(deadline);
@@ -14,7 +9,7 @@ function calculateRemainingDays(deadline) {
     const diffTime = deadlineDate.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
-function calculateDaysDifference(startDate) {
+export function calculateDaysDifference(startDate) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const start = new Date(startDate);

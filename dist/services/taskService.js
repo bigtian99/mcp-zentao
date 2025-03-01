@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskService = void 0;
-const dateUtils_1 = require("../utils/dateUtils");
-class TaskService {
+import { calculateRemainingDays } from '../utils/dateUtils';
+export class TaskService {
+    api;
     constructor(api) {
         this.api = api;
     }
@@ -29,7 +27,7 @@ class TaskService {
         }
         // 计算剩余时间
         if (task.deadline) {
-            const remainingDays = (0, dateUtils_1.calculateRemainingDays)(task.deadline);
+            const remainingDays = calculateRemainingDays(task.deadline);
             enrichedTask.remaining_days = remainingDays;
             if (remainingDays < 0) {
                 enrichedTask.status_description = '已逾期';
@@ -44,4 +42,3 @@ class TaskService {
         return enrichedTask;
     }
 }
-exports.TaskService = TaskService;

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { createHash } from 'crypto';
-import { Bug, BugStatus, Task, TaskStatus, ZentaoConfig } from '../types/zentao';
+import { Bug, BugStatus, CreateTaskRequest, Task, TaskStatus, ZentaoConfig } from '../types/zentao';
 
 export interface Product {
     id: number;
@@ -244,6 +244,31 @@ export class ZentaoAPI {
             return response;
         } catch (error) {
             console.error('解决Bug失败:', error);
+            throw error;
+        }
+    }
+
+    async createTask(task: CreateTaskRequest): Promise<Task> {
+        try {
+            console.log('正在创建新任务...');
+            if (!task.execution) {
+                throw new Error('创建任务需要指定执行ID');
+            }
+
+            // 将数据转换为表单格式
+            const formData = new URLSearchParams();
+            Object.entries(task).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    formData.append(key, value.toString());
+                }
+            });
+
+            // 在URL中添加执行ID
+            const response = await this.request<Task>('POST', `/executions/${task.execution}/tasks`, undefined, formData);
+            console.log('创建任务响应:', response);
+            return response;
+        } catch (error) {
+            console.error('创建任务失败:', error);
             throw error;
         }
     }

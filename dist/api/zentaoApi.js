@@ -1,16 +1,12 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ZentaoAPI = void 0;
-const axios_1 = __importDefault(require("axios"));
-const crypto_1 = require("crypto");
-class ZentaoAPI {
+import axios from 'axios';
+import { createHash } from 'crypto';
+export class ZentaoAPI {
+    config;
+    client;
+    token = null;
     constructor(config) {
-        this.token = null;
         this.config = config;
-        this.client = axios_1.default.create({
+        this.client = axios.create({
             baseURL: `${this.config.url}/api.php/${this.config.apiVersion}`,
             timeout: 10000,
         });
@@ -18,7 +14,7 @@ class ZentaoAPI {
     async getToken() {
         if (this.token)
             return this.token;
-        const password = (0, crypto_1.createHash)('md5')
+        const password = createHash('md5')
             .update(this.config.password)
             .digest('hex');
         try {
@@ -39,7 +35,7 @@ class ZentaoAPI {
             throw new Error(`获取token失败: 状态码 ${response.status}`);
         }
         catch (error) {
-            if (axios_1.default.isAxiosError(error)) {
+            if (axios.isAxiosError(error)) {
                 const errorMessage = error.response
                     ? `状态码: ${error.response.status}, 响应: ${JSON.stringify(error.response.data)}`
                     : error.message;
@@ -49,7 +45,6 @@ class ZentaoAPI {
         }
     }
     async request(method, url, params, data) {
-        var _a, _b, _c, _d;
         const token = await this.getToken();
         try {
             console.log(`正在请求 ${method} ${url}`, { params, data });
@@ -65,13 +60,13 @@ class ZentaoAPI {
             return response.data;
         }
         catch (error) {
-            if (axios_1.default.isAxiosError(error)) {
+            if (axios.isAxiosError(error)) {
                 console.error('请求失败:', {
-                    status: (_a = error.response) === null || _a === void 0 ? void 0 : _a.status,
-                    data: (_b = error.response) === null || _b === void 0 ? void 0 : _b.data,
+                    status: error.response?.status,
+                    data: error.response?.data,
                     message: error.message
                 });
-                throw new Error(`请求失败: ${((_d = (_c = error.response) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.message) || error.message}`);
+                throw new Error(`请求失败: ${error.response?.data?.message || error.message}`);
             }
             throw error;
         }
@@ -209,5 +204,27 @@ class ZentaoAPI {
             throw error;
         }
     }
+    async createTask(task) {
+        try {
+            console.log('正在创建新任务...');
+            if (!task.execution) {
+                throw new Error('创建任务需要指定执行ID');
+            }
+            // 将数据转换为表单格式
+            const formData = new URLSearchParams();
+            Object.entries(task).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    formData.append(key, value.toString());
+                }
+            });
+            // 在URL中添加执行ID
+            const response = await this.request('POST', `/executions/${task.execution}/tasks`, undefined, formData);
+            console.log('创建任务响应:', response);
+            return response;
+        }
+        catch (error) {
+            console.error('创建任务失败:', error);
+            throw error;
+        }
+    }
 }
-exports.ZentaoAPI = ZentaoAPI;
