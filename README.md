@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/bigtian99-mcp-zentao-badge.png)](https://mseep.ai/app/bigtian99-mcp-zentao)
+
 # MCP-Zentao
 
 禅道项目管理系统的高级API集成包，提供任务管理、Bug跟踪等功能的完整封装，专为Cursor IDE设计的MCP扩展。
